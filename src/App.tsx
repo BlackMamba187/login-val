@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -67,9 +70,8 @@ function App() {
 
 	const handleSubmit = (event: any) => {
 		const form = event.currentTarget;
+		event.preventDefault();
 		if (form.checkValidity() === false) {
-			event.preventDefault();
-			event.stopPropagation();
 			setErrors({
 				...errors,
 				[event.target.name]: true,
@@ -77,26 +79,47 @@ function App() {
 		} else {
 			setShowError(false);
 			setShowPasswordError(false);
-			if (values.password !== values.confirmPassword) {
-				setShowPasswordError(true);
-			} else {
-				// Your submission logic here
-			}
+			toast.success(`Thanks for Signing up ${values.username}`, {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
 		}
 	};
 
 	return (
 		<div className="">
-			<h1 className="text-center mt-5">Please register</h1>
-			
+			<ToastContainer
+				position="top-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
+			<h1 className="text-center mt-5">Please Register</h1>
 			<Form
+				style={{ maxWidth: "700px" }}
 				className="container"
 				noValidate
 				validated={true}
 				onSubmit={handleSubmit}
 			>
 				{inputs.map((input) => (
-					<Form.Group className="my-4" controlId={input.controlId} key={input.controlId}>
+					<Form.Group
+						className="my-4"
+						controlId={input.controlId}
+						key={input.controlId}
+					>
 						<Form.Label>{input.label}</Form.Label>
 						<Form.Control
 							required={input.required}
